@@ -1,4 +1,5 @@
 from typing import List, Optional, Dict, Any, Literal
+# pyrefly: ignore [missing-import]
 from pydantic import BaseModel, Field, field_validator, model_validator
 from app.schemas.idea import FeatureSpec
 

@@ -4,6 +4,7 @@ All tools are strictly static, read-only, timeout-bounded, size-capped, and host
 """
 
 from typing import Any, Dict, Optional, Set
+# pyrefly: ignore [missing-import]
 from pydantic import BaseModel, Field
 from urllib.parse import urlparse
 

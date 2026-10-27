@@ -10,10 +10,12 @@ import { env } from "../config/env.js";
 
 dotenv.config();
 
-async function seed() {
-  const uri = process.env.MONGODB_URI || env.MONGODB_URI;
-  console.log(`Connecting to MongoDB at ${uri}...`);
-  await mongoose.connect(uri);
+export async function seedDatabase(disconnectAfter = false) {
+  if (mongoose.connection.readyState !== 1) {
+    const uri = process.env.MONGODB_URI || env.MONGODB_URI;
+    console.log(`Connecting to MongoDB at ${uri}...`);
+    await mongoose.connect(uri);
+  }
 
   console.log("Cleaning existing database collections...");
   await Promise.all([
@@ -674,11 +676,15 @@ async function seed() {
     sampleQueryId: sampleQuery._id,
   });
 
-  await mongoose.disconnect();
-  console.log("MongoDB connection closed.");
+  if (disconnectAfter) {
+    await mongoose.disconnect();
+    console.log("MongoDB connection closed.");
+  }
 }
 
-seed().catch((err) => {
-  console.error("Seed failed with error:", err);
-  process.exit(1);
-});
+if (process.argv[1] && (process.argv[1].endsWith("seed.ts") || process.argv[1].endsWith("seed.js"))) {
+  seedDatabase(true).catch((err) => {
+    console.error("Seed failed with error:", err);
+    process.exit(1);
+  });
+}

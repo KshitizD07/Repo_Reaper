@@ -47,3 +47,4 @@ coverage/
 # Project evaluation & raw data
 data/raw/
 ai-service/data/index/
+.dev-mongo/
